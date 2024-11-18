@@ -1,0 +1,210 @@
+﻿@model IEnumerable<CRUDStivenSosaEF.Models.Libro>
+
+@{
+    ViewData["Title"] = "Libros";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="text-center">
+        <h1>Libros</h1>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a asp-action="Create" class="btn btn-success btn-crear">
+            <i class="fas fa-plus"></i> Nuevo Libro
+        </a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <table class="table table-hover" id="example">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Titulo)</th>
+                        <th>@Html.DisplayNameFor(model => model.Descripcion)</th>
+                        <th>@Html.DisplayNameFor(model => model.Publicacion)</th>
+                        <th>@Html.DisplayNameFor(model => model.FechaRegistro)</th>
+                        <th>@Html.DisplayNameFor(model => model.CodigoCategoriaNavigation.CodigoCategoria)</th>
+                        <th>@Html.DisplayNameFor(model => model.NitEditorialNavigation.NitEditorial)</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Titulo)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Publicacion)</td>
+                            <td>@Html.DisplayFor(modelItem => item.FechaRegistro)</td>
+                            <td>@Html.DisplayFor(modelItem => item.CodigoCategoriaNavigation.CodigoCategoria)</td>
+                            <td>@Html.DisplayFor(modelItem => item.NitEditorialNavigation.NitEditorial)</td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a asp-action="Edit" asp-route-id="@item.Isbn"
+                                       class="btn btn-warning btn-sm btn-accion" title="Editar libro">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.Isbn"
+                                       class="btn btn-info btn-sm btn-accion" title="Ver detalles">
+                                        <i class="fas fa-info-circle"></i> Detalles
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.Isbn"
+                                       class="btn btn-danger btn-sm btn-accion" title="Eliminar libro">
+                                        <i class="fas fa-trash"></i> Eliminar
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .icono {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+    }
+    /* Estilos para los botones de DataTables */
+    .botonCopiar {
+        background-color: #6c757d !important;
+        color: white !important;
+    }
+
+    .botonCsv {
+        background-color: #007bff !important;
+        color: white !important;
+    }
+
+    .botonExcel {
+        background-color: #28a745 !important;
+        color: white !important;
+    }
+
+    .botonPdf {
+        background-color: #dc3545 !important;
+        color: white !important;
+    }
+
+    .botonPrint {
+        background-color: #ffc107 !important;
+        color: black !important;
+    }
+
+    .botonColvis {
+        background-color: #17a2b8 !important;
+        color: white !important;
+    }
+
+    /* Estilos para los botones de acciones */
+    .btn-accion {
+        margin: 0 2px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-accion:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+    /* Estilo para el botón crear */
+    .btn-crear {
+        padding: 8px 20px;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-crear:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+    /* Estilos para la tabla */
+    .table {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .thead-dark th {
+        background-color: #343a40;
+        color: white;
+        border: none;
+    }
+
+    .table tbody tr:hover {
+        background-color: rgba(0,0,0,0.05);
+    }
+
+    /* Tooltip personalizado */
+    .tooltip-inner {
+        max-width: 200px;
+        padding: 8px;
+        background-color: #343a40;
+        border-radius: 4px;
+    }
+</style>
+
+<script>
+    new DataTable('#example', {
+        layout: {
+            topStart: {
+                buttons: [
+                    {
+                        extend: 'copy',
+                        text: '<img src="@Url.Content("~/icones/copiar.png")" alt="Copiar" class="icono"> ',
+                        className: 'botonCopiar btn'
+                    },
+                    {
+                        extend: 'csv',
+                        text: '<img src="@Url.Content("~/icones/csv.png")" alt="CSV" class="icono"> ',
+                        className: 'botonCsv btn'
+                    },
+                    {
+                        extend: 'excel',
+                        text: '<img src="@Url.Content("~/icones/sobresalir.png")" alt="Excel" class="icono"> ',
+                        className: 'botonExcel btn'
+                    },
+                    {
+                        extend: 'pdf',
+                        text: '<img src="@Url.Content("~/icones/expediente.png")" alt="PDF" class="icono"> ',
+                        className: 'botonPdf btn'
+                    },
+                    {
+                        extend: 'print',
+                        text: '<img src="@Url.Content("~/icones/impresora.png")" alt="Imprimir" class="icono"> ',
+                        className: 'botonPrint btn'
+                    },
+                    {
+                        extend: 'colvis',
+                        text: '<img src="@Url.Content("~/icones/filtrar.png")" alt="Filtrar" class="icono"> ',
+                        className: 'botonColvis btn'
+                    }
+                ]
+            }
+        },
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/2.0.2/i18n/es-ES.json',
+        },
+        scrollX: true,
+        pageLength: 10,
+        order: [[0, 'asc']],  // Ordenar por autor
+        initComplete: function (settings, json) {
+            $(".dt-buttons").removeClass("dt-buttons");
+            $(".dt-button").addClass("botones m-1");
+
+            // Inicializar tooltips de Bootstrap
+            $('[title]').tooltip();
+        }
+    });
+
+    // Confirmación para eliminar
+    $(document).on('click', '.btn-danger', function (e) {
+        if (!confirm('¿Está seguro de que desea eliminar este registro?')) {
+            e.preventDefault();
+        }
+    });
+</script>

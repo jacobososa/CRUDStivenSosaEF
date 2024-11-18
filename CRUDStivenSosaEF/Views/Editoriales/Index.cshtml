@@ -1,0 +1,186 @@
+﻿@model IEnumerable<CRUDStivenSosaEF.Models.Editoriale>
+
+@{
+    ViewData["Title"] = "Editoriales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid mt-4">
+    <div class="text-center">
+        <h1 class="mb-0">Editoriales</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a asp-action="Create" class="btn btn-success">
+            <i class="fas fa-plus-circle"></i> Nueva Editorial
+        </a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <table class="table table-hover" id="example">
+                <thead class="bg-light">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+                        <th>@Html.DisplayNameFor(model => model.Telefono)</th>
+                        <th>@Html.DisplayNameFor(model => model.Direccion)</th>
+                        <th>@Html.DisplayNameFor(model => model.Correo)</th>
+                        <th>@Html.DisplayNameFor(model => model.SitioWeb)</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Telefono)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Direccion)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Correo)</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.SitioWeb))
+                                {
+                                    <a href="@item.SitioWeb" target="_blank" class="text-primary">
+                                        <i class="fas fa-external-link-alt"></i> Visitar
+                                    </a>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a asp-action="Edit" asp-route-id="@item.NitEditorial" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.NitEditorial" class="btn btn-info btn-sm">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.NitEditorial" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .icono {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+    }
+    /* Estilos para los botones de exportación */
+    .botonCopiar {
+        background-color: #6c757d !important;
+        color: white !important;
+    }
+
+    .botonCsv {
+        background-color: #007bff !important;
+        color: white !important;
+    }
+
+    .botonExcel {
+        background-color: #28a745 !important;
+        color: white !important;
+    }
+
+    .botonPdf {
+        background-color: #dc3545 !important;
+        color: white !important;
+    }
+
+    .botonPrint {
+        background-color: #ffc107 !important;
+        color: #212529 !important;
+    }
+
+    .botonColvis {
+        background-color: #17a2b8 !important;
+        color: white !important;
+    }
+
+    /* Estilos para los botones de acción */
+    .btn-group .btn {
+        margin: 0 2px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-group .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+    /* Estilos para la tabla */
+    .table {
+        margin-bottom: 0;
+    }
+
+        .table thead th {
+            border-top: none;
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+    .card {
+        border-radius: 8px;
+        border: none;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        new DataTable('#example', {
+            layout: {
+                topStart: {
+                    buttons: [
+                        {
+                            extend: 'copy',
+                            text: '<img src="@Url.Content("~/icones/copiar.png")" alt="Copiar" class="icono"> ',
+                            className: 'botonCopiar btn'
+                        },
+                        {
+                            extend: 'csv',
+                            text: '<img src="@Url.Content("~/icones/csv.png")" alt="CSV" class="icono"> ',
+                            className: 'botonCsv btn'
+                        },
+                        {
+                            extend: 'excel',
+                            text: '<img src="@Url.Content("~/icones/sobresalir.png")" alt="Excel" class="icono"> ',
+                            className: 'botonExcel btn'
+                        },
+                        {
+                            extend: 'pdf',
+                            text: '<img src="@Url.Content("~/icones/expediente.png")" alt="PDF" class="icono"> ',
+                            className: 'botonPdf btn'
+                        },
+                        {
+                            extend: 'print',
+                            text: '<img src="@Url.Content("~/icones/impresora.png")" alt="Imprimir" class="icono"> ',
+                            className: 'botonPrint btn'
+                        },
+                        {
+                            extend: 'colvis',
+                            text: '<img src="@Url.Content("~/icones/filtrar.png")" alt="Filtrar" class="icono"> ',
+                            className: 'botonColvis btn'
+                        }
+                    ]
+                }
+            },
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/2.0.2/i18n/es-ES.json'
+            },
+            scrollX: true,
+            responsive: true,
+            initComplete: function () {
+                $(".dt-buttons").removeClass("dt-buttons");
+                $(".dt-button").addClass("botones m-1");
+            }
+        });
+    });
+</script>
